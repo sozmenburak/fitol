@@ -7,6 +7,7 @@ import {
 import { useAppData } from './hooks/useAppData';
 import { useAlarmScheduler } from './hooks/useAlarmScheduler';
 import AlarmOverlay from './components/AlarmOverlay';
+import SetupWizard from './components/SetupWizard';
 import Dashboard from './components/Dashboard';
 import MealTracker from './components/MealTracker';
 import WorkoutTracker from './components/WorkoutTracker';
@@ -32,6 +33,16 @@ export default function App() {
 
   const appData = useAppData();
   const { data } = appData;
+
+  const handleSetupComplete = (setupData) => {
+    appData.updateData(prev => ({
+      ...prev,
+      setupComplete: true,
+      profile: setupData.profile,
+      dailyTargets: setupData.dailyTargets,
+      settings: { ...prev.settings, ...setupData.settings },
+    }));
+  };
 
   const alarm = useAlarmScheduler(data.settings, appData.addPenalty);
   const scheduled = alarm.getScheduledAlarms();
@@ -61,6 +72,10 @@ export default function App() {
       case 'settings': return <Settings data={data} updateSettings={appData.updateSettings} updateData={appData.updateData} />;
     }
   };
+
+  if (!data.setupComplete) {
+    return <SetupWizard onComplete={handleSetupComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground flex">

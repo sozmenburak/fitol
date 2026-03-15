@@ -3,15 +3,16 @@ import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Separator } from './ui/separator';
-import { Save, Volume2, RotateCcw } from 'lucide-react';
+import { Save, Volume2, RotateCcw, Target } from 'lucide-react';
 import { playAlarmSound, stopAlarm, playClickSound } from '../utils/alarmSystem';
 
 export default function Settings({ data, updateSettings, updateData }) {
   const [profile, setProfile] = useState(data.profile);
+  const [targets, setTargets] = useState(data.dailyTargets);
   const [testing, setTesting] = useState(false);
 
   const handleSave = () => {
-    updateData(prev => ({ ...prev, profile }));
+    updateData(prev => ({ ...prev, profile, dailyTargets: targets }));
     playClickSound();
   };
 
@@ -50,6 +51,38 @@ export default function Settings({ data, updateSettings, updateData }) {
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Hedef Kilo (kg)</label>
               <Input type="number" value={profile.targetWeight} onChange={e => setProfile(p => ({ ...p, targetWeight: +e.target.value }))} />
+            </div>
+            <Button className="w-full" onClick={handleSave}><Save size={14} /> Kaydet</Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Daily Targets */}
+      <Card>
+        <CardHeader><CardTitle className="flex items-center gap-1.5"><Target size={14} /> Günlük Hedefler</CardTitle></CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Kalori (kcal)</label>
+              <Input type="number" value={targets.calories} onChange={e => setTargets(t => ({ ...t, calories: +e.target.value }))} />
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Protein (g)</label>
+                <Input type="number" value={targets.protein} onChange={e => setTargets(t => ({ ...t, protein: +e.target.value }))} />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Karb. (g)</label>
+                <Input type="number" value={targets.carbs} onChange={e => setTargets(t => ({ ...t, carbs: +e.target.value }))} />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 block">Yağ (g)</label>
+                <Input type="number" value={targets.fat} onChange={e => setTargets(t => ({ ...t, fat: +e.target.value }))} />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Su (ml)</label>
+              <Input type="number" step={250} value={targets.water} onChange={e => setTargets(t => ({ ...t, water: +e.target.value }))} />
             </div>
             <Button className="w-full" onClick={handleSave}><Save size={14} /> Kaydet</Button>
           </div>

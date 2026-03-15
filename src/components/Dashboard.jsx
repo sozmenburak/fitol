@@ -8,7 +8,6 @@ import {
   AlertTriangle, Target, Clock, ArrowRight, Waves
 } from 'lucide-react';
 import { getToday } from '../utils/storage';
-import { dailyTargets } from '../data/foods';
 import { getTodayExercises, weeklyPlan } from '../data/exercises';
 
 export default function Dashboard({ data, scheduledAlarms, dismissedAlarms }) {
@@ -105,9 +104,9 @@ export default function Dashboard({ data, scheduledAlarms, dismissedAlarms }) {
           <CardContent>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-semibold tabular-nums">{totalCalories}</span>
-              <span className="text-sm text-muted-foreground">/ {dailyTargets.calories}</span>
+              <span className="text-sm text-muted-foreground">/ {data.dailyTargets.calories}</span>
             </div>
-            <Progress value={totalCalories} max={dailyTargets.calories} className="mt-3" />
+            <Progress value={totalCalories} max={data.dailyTargets.calories} className="mt-3" />
           </CardContent>
         </Card>
 
@@ -120,9 +119,9 @@ export default function Dashboard({ data, scheduledAlarms, dismissedAlarms }) {
           <CardContent>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-semibold tabular-nums">{(waterToday / 1000).toFixed(1)}</span>
-              <span className="text-sm text-muted-foreground">/ {(dailyTargets.water / 1000)}L</span>
+              <span className="text-sm text-muted-foreground">/ {(data.dailyTargets.water / 1000)}L</span>
             </div>
-            <Progress value={waterToday} max={dailyTargets.water} className="mt-3" indicatorClassName="bg-chart-2" />
+            <Progress value={waterToday} max={data.dailyTargets.water} className="mt-3" indicatorClassName="bg-chart-2" />
           </CardContent>
         </Card>
 
@@ -168,9 +167,9 @@ export default function Dashboard({ data, scheduledAlarms, dismissedAlarms }) {
         <CardContent>
           <div className="space-y-3">
             {[
-              { label: 'Protein', value: totalProtein, max: dailyTargets.protein, color: 'bg-chart-1' },
-              { label: 'Karbonhidrat', value: totalCarbs, max: dailyTargets.carbs, color: 'bg-chart-2' },
-              { label: 'Yağ', value: totalFat, max: dailyTargets.fat, color: 'bg-chart-5' },
+              { label: 'Protein', value: totalProtein, max: data.dailyTargets.protein, color: 'bg-chart-1' },
+              { label: 'Karbonhidrat', value: totalCarbs, max: data.dailyTargets.carbs, color: 'bg-chart-2' },
+              { label: 'Yağ', value: totalFat, max: data.dailyTargets.fat, color: 'bg-chart-5' },
             ].map(m => (
               <div key={m.label}>
                 <div className="flex justify-between text-sm mb-1.5">

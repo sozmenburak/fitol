@@ -1,12 +1,20 @@
 const STORAGE_KEY = 'gobeksiz_data';
 
 const defaultData = {
+  setupComplete: false,
   profile: {
-    name: 'Burak',
-    height: 193,
-    startWeight: 93,
-    targetWeight: 82,
+    name: '',
+    height: 175,
+    startWeight: 80,
+    targetWeight: 70,
     startDate: new Date().toISOString().split('T')[0],
+  },
+  dailyTargets: {
+    calories: 2400,
+    protein: 180,
+    carbs: 250,
+    fat: 70,
+    water: 3000,
   },
   weightLog: [],
   mealLog: {},

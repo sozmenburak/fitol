@@ -7,7 +7,7 @@ import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import { Search, Plus, Trash2, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { getToday } from '../utils/storage';
-import { foodDatabase, mealPlan, dailyTargets } from '../data/foods';
+import { foodDatabase, mealPlan } from '../data/foods';
 import { playSuccessSound, playClickSound } from '../utils/alarmSystem';
 
 const categories = [
@@ -50,7 +50,7 @@ export default function MealTracker({ data, addMeal, removeMeal, addWater }) {
   const totalProtein = todayMeals.reduce((sum, m) => sum + (m.protein * (m.quantity || 1)), 0);
   const totalCarbs = todayMeals.reduce((sum, m) => sum + (m.carbs * (m.quantity || 1)), 0);
   const totalFat = todayMeals.reduce((sum, m) => sum + (m.fat * (m.quantity || 1)), 0);
-  const isOver = totalCalories > dailyTargets.calories;
+  const isOver = totalCalories > data.dailyTargets.calories;
 
   const filtered = useMemo(() => {
     const term = searchTerm.toLowerCase().trim();
@@ -110,16 +110,16 @@ export default function MealTracker({ data, addMeal, removeMeal, addWater }) {
         <CardContent>
           <div className="flex items-baseline gap-1.5 mb-3">
             <span className={`text-3xl font-semibold tabular-nums ${isOver ? 'text-destructive' : ''}`}>{totalCalories}</span>
-            <span className="text-sm text-muted-foreground">/ {dailyTargets.calories} kcal</span>
+            <span className="text-sm text-muted-foreground">/ {data.dailyTargets.calories} kcal</span>
           </div>
-          <Progress value={totalCalories} max={dailyTargets.calories} indicatorClassName={isOver ? 'bg-destructive' : ''} />
-          {isOver && <p className="text-xs text-destructive mt-2">Kalori limitini {totalCalories - dailyTargets.calories} kcal aştın.</p>}
+          <Progress value={totalCalories} max={data.dailyTargets.calories} indicatorClassName={isOver ? 'bg-destructive' : ''} />
+          {isOver && <p className="text-xs text-destructive mt-2">Kalori limitini {totalCalories - data.dailyTargets.calories} kcal aştın.</p>}
 
           <div className="grid grid-cols-3 gap-3 mt-4">
             {[
-              { label: 'Protein', value: totalProtein, max: dailyTargets.protein, unit: 'g' },
-              { label: 'Karbonhidrat', value: totalCarbs, max: dailyTargets.carbs, unit: 'g' },
-              { label: 'Yağ', value: totalFat, max: dailyTargets.fat, unit: 'g' },
+              { label: 'Protein', value: totalProtein, max: data.dailyTargets.protein, unit: 'g' },
+              { label: 'Karbonhidrat', value: totalCarbs, max: data.dailyTargets.carbs, unit: 'g' },
+              { label: 'Yağ', value: totalFat, max: data.dailyTargets.fat, unit: 'g' },
             ].map(m => (
               <div key={m.label}>
                 <p className="text-xs text-muted-foreground">{m.label}</p>
@@ -140,12 +140,12 @@ export default function MealTracker({ data, addMeal, removeMeal, addWater }) {
             <CardTitle>Su</CardTitle>
             <span className="text-sm font-medium tabular-nums">
               {(waterToday / 1000).toFixed(1)}L
-              <span className="text-muted-foreground font-normal"> / {dailyTargets.water / 1000}L</span>
+              <span className="text-muted-foreground font-normal"> / {data.dailyTargets.water / 1000}L</span>
             </span>
           </div>
         </CardHeader>
         <CardContent>
-          <Progress value={waterToday} max={dailyTargets.water} indicatorClassName="bg-chart-2" className="mb-3" />
+          <Progress value={waterToday} max={data.dailyTargets.water} indicatorClassName="bg-chart-2" className="mb-3" />
           <div className="flex gap-2">
             {[250, 500, 750].map(ml => (
               <Button key={ml} variant="outline" size="sm" className="flex-1" onClick={() => { addWater(ml); playClickSound(); }}>

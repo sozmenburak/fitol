@@ -4,9 +4,12 @@ const defaultData = {
   setupComplete: false,
   profile: {
     name: '',
+    gender: '',
+    age: 25,
     height: 175,
     startWeight: 80,
     targetWeight: 70,
+    activityLevel: 'moderate',
     startDate: new Date().toISOString().split('T')[0],
   },
   dailyTargets: {
